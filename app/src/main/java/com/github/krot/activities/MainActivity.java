@@ -78,7 +78,7 @@ public class MainActivity extends Activity {
     }
 
     private void populateRoundData() {
-        Game game = Game.getInstance();
+        Game game = Game.INSTANCE;
         Round round = game.nextRound();
         if (round != null) {
             ViewGroup viewgroup = (ViewGroup) findViewById(R.id.operationsPanel);
