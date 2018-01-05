@@ -12,8 +12,8 @@ import com.github.krot.game.Round;
 import com.github.krot.utils.RoundsProducer;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+
+import static com.github.krot.game.Operation.valueOf;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -81,7 +81,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_ROUNDS);
         db.execSQL(CREATE_TABLE_OPERATORS);
 
-        for (Round round : RoundsProducer.getInstance().getRounds()) {
+        for (Round round : RoundsProducer.INSTANCE.getRounds()) {
             addRound(db, round);
         }
     }
@@ -178,20 +178,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     new String[] { String.valueOf(roundId) });
 
             if (cursor.moveToFirst()) {
-                round = new Round(roundId);
-                round.setInitValue(cursor.getFloat(cursor.getColumnIndex(COLUMN_INIT_VALUE)));
-                round.setTargetValue(cursor.getFloat(cursor.getColumnIndex(COLUMN_TARGET_VALUE)));
+                float initValue = cursor.getFloat(cursor.getColumnIndex(COLUMN_INIT_VALUE));
+                float targetValue = cursor.getFloat(cursor.getColumnIndex(COLUMN_TARGET_VALUE));
+                round = new Round(roundId, initValue, targetValue, new ArrayList<Operator>());
 
                 cursor = db.rawQuery("SELECT * from " + TABLE_OPERATORS
                                 + " WHERE " + COLUMN_ROUND_ID + " = ?",
                         new String[] { String.valueOf(roundId) });
 
                 if (cursor.moveToFirst()) {
-                    round.setOperators(new ArrayList<Operator>());
                     do {
-                        Operator operator = new Operator();
-                        operator.setOperation(Operation.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_OPERATION))));
-                        operator.setOperand(cursor.getInt(cursor.getColumnIndex(COLUMN_OPERAND)));
+                        Operation operation = valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_OPERATION)));
+                        int operand = cursor.getInt(cursor.getColumnIndex(COLUMN_OPERAND));
+                        Operator operator = new Operator(operation, operand);
+
                         round.getOperators().add(operator);
                     } while (cursor.moveToNext());
                 }
@@ -206,5 +206,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return round;
     }
-
 }

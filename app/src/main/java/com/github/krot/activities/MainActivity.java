@@ -28,7 +28,6 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 public class MainActivity extends Activity {
-
     private static final float EQUATION_FONT_SIZE_PERCENT = 0.15f;
     private static final float BUTTON_FONT_SIZE_PERCENT = 0.5f;
     private static final float ROUND_INFO_FONT_SIZE_PERCENT = 0.06f;
@@ -63,7 +62,7 @@ public class MainActivity extends Activity {
 
     private void setFontSize() {
         int height = getResources().getDisplayMetrics().heightPixels;
-        float equalsPanelTextSize = (float) (height * EQUATION_FONT_SIZE_PERCENT);
+        float equalsPanelTextSize = height * EQUATION_FONT_SIZE_PERCENT;
 
         ((TextView) findViewById(R.id.editText1)).setTextSize(TypedValue.COMPLEX_UNIT_PX, equalsPanelTextSize);
         ((TextView) findViewById(R.id.editText2)).setTextSize(TypedValue.COMPLEX_UNIT_PX, equalsPanelTextSize);
@@ -81,7 +80,7 @@ public class MainActivity extends Activity {
         Game game = Game.INSTANCE;
         Round round = game.nextRound();
         if (round != null) {
-            ViewGroup viewgroup = (ViewGroup) findViewById(R.id.operationsPanel);
+            ViewGroup viewgroup = findViewById(R.id.operationsPanel);
             viewgroup.removeAllViews();
             for (Operator operator : round.getOperators()) {
                 View ov = new OperatorView(this, operator);
@@ -90,14 +89,14 @@ public class MainActivity extends Activity {
 
             NumberFormat nf = new DecimalFormat("##.##");
 
-            TextView initValueEditText = ((TextView) findViewById(R.id.editText1));
+            TextView initValueEditText = findViewById(R.id.editText1);
             curValue = round.getInitValue();
             initValueEditText.setText(nf.format(curValue));
 
-            TextView equalsSignEditText = ((TextView) findViewById(R.id.editText2));
+            TextView equalsSignEditText = findViewById(R.id.editText2);
             equalsSignEditText.setTextColor(Color.RED);
 
-            TextView targetValueEditText = ((TextView) findViewById(R.id.editText3));
+            TextView targetValueEditText = findViewById(R.id.editText3);
             targetValue = round.getTargetValue();
             targetValueEditText.setText(nf.format(targetValue));
 
@@ -136,7 +135,7 @@ public class MainActivity extends Activity {
                     viewgroup.removeView(view);
                     Log.v("MA", "Removed view");
 
-                    TextView tv = (TextView) findViewById(R.id.editText1);
+                    TextView tv = findViewById(R.id.editText1);
                     curValue = ((OperatorView) view).getOperator().apply(curValue);
 
                     StringBuilder outputValueBuilder = new StringBuilder();
@@ -154,11 +153,7 @@ public class MainActivity extends Activity {
                         DatabaseHelper.getHelper().putProperty(Properties.NEXT_ROUND.toString(), String.valueOf(SystemProperties.NEXT_ROUND));
 
                         Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                populateRoundData();
-                            }
-                        }, 2000);
+                        handler.postDelayed(MainActivity.this::populateRoundData, 2000);
                     }
                     break;
 
@@ -173,7 +168,6 @@ public class MainActivity extends Activity {
     }
 
     private class MyClickListener implements View.OnClickListener {
-
         @Override
         public void onClick(View v) {
             populateRoundData();

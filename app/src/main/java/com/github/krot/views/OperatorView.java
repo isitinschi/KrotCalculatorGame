@@ -1,9 +1,7 @@
 package com.github.krot.views;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.DragEvent;
 import android.view.Gravity;
@@ -34,7 +32,7 @@ public class OperatorView extends TextView {
         setOnDragListener(new OperationViewDragListener());
 
         int height = getResources().getDisplayMetrics().heightPixels;
-        float textSize = (float) (height * FONT_SIZE_PERCENT);
+        float textSize = height * FONT_SIZE_PERCENT;
         setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
 
         int size = (int) (height * CIRCLE_SHAPE_SIZE_PERCENT);
@@ -63,12 +61,7 @@ public class OperatorView extends TextView {
                 view.setVisibility(View.INVISIBLE);
             } else if (event.getAction() == DragEvent.ACTION_DRAG_ENDED) {
                 final View view = ((View)event.getLocalState());
-                view.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.setVisibility(View.VISIBLE);
-                    }
-                });
+                view.post(() -> view.setVisibility(View.VISIBLE));
             }
 
             return true;
@@ -78,5 +71,4 @@ public class OperatorView extends TextView {
     public Operator getOperator() {
         return operator;
     }
-
 }
