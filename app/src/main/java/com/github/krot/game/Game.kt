@@ -1,11 +1,10 @@
 package com.github.krot.game
 
-import com.github.krot.sqlite.helper.DatabaseHelper
+import com.github.krot.utils.RoundsProducer
 import com.github.krot.utils.SystemProperties
 
 object Game {
-    fun nextRound(): Round {
-        val nextRoundId = SystemProperties.NEXT_ROUND
-        return DatabaseHelper.getHelper().findRoundById(nextRoundId)
-    }
+    private val roundIdToRound = RoundsProducer.getRounds().map { it.id to it }.toMap()
+
+    fun nextRound() = roundIdToRound[SystemProperties.NEXT_ROUND]
 }

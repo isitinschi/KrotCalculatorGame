@@ -44,7 +44,7 @@ public class MainActivity extends Activity {
     }
 
     private void initSystem() {
-        DatabaseHelper.init(this);
+        DatabaseHelper.Companion.init(this);
         PropertiesLoader.loadSystemProperties();
     }
 
@@ -149,8 +149,7 @@ public class MainActivity extends Activity {
 
                     if (Math.abs(curValue - targetValue) < E_PRECISION) {
                         ((TextView) findViewById(R.id.editText2)).setTextColor(Color.GREEN);
-                        ++SystemProperties.NEXT_ROUND;
-                        DatabaseHelper.getHelper().putProperty(Properties.NEXT_ROUND.toString(), String.valueOf(SystemProperties.NEXT_ROUND));
+                        DatabaseHelper.INSTANCE.putProperty(Properties.NEXT_ROUND.toString(), String.valueOf(++SystemProperties.NEXT_ROUND));
 
                         Handler handler = new Handler();
                         handler.postDelayed(MainActivity.this::populateRoundData, 2000);

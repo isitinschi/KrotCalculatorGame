@@ -4,5 +4,5 @@ data class Round(
         val id: Int,
         val initValue: Float,
         val targetValue: Float,
-        val operators: List<Operator>
+        val operators: MutableList<Operator>
 )
