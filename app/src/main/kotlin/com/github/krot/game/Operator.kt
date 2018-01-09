@@ -4,8 +4,7 @@ import android.text.Html
 import android.text.Spanned
 import com.github.krot.game.Operation.*
 
-class Operator (val operation: Operation, val operand: Int? = null) {
-
+class Operator (private val operation: Operation, private val operand: Int? = null) {
     val formattedString: Spanned
         get() {
             val htmlCode: String = when (operation) {
