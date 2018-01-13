@@ -14,3 +14,7 @@ VIDEO:
 
 [![IMAGE](https://img.youtube.com/vi/PljT8o1JB7Y/maxresdefault.jpg)](https://www.youtube.com/watch?v=PljT8o1JB7Y)
 (click it)
+
+PLAY STORE:
+
+https://play.google.com/store/apps/details?id=com.sitinsky.krot&hl=en

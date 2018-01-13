@@ -41,7 +41,7 @@ object OnDragListener {
                     DatabaseHelper.INSTANCE.putProperty(Properties.NEXT_ROUND.toString(), (++SystemProperties.NEXT_ROUND).toString())
 
                     val handler = Handler()
-                    handler.postDelayed({ mainActivity.populateRoundData() }, 2000)
+                    handler.postDelayed({ mainActivity.populateRoundData() }, 1000)
                 }
             }
         }
